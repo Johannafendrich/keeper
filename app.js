@@ -1,1 +1,52 @@
-console.log("what's up");
+const fs = require("fs");
+
+const [command, key, value] = process.argv.slice(2);
+
+function get() {
+  console.log("Called GET", key);
+  //Read and log db.json
+  try {
+    const passwordsJSON = fs.readFileSync("./db.json", "utf8");
+    const passwords = JSON.parse(passwordsJSON);
+    value = (key, passwords[key]);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function set() {
+  console.log("Called SET", key, value);
+  try {
+    //Read db.json
+    let passwordsJSON = fs.readFileSync("./db.json", "utf8");
+    const passwords = JSON.parse(passwordsJSON);
+    // Update value by key
+    passwords[key] = value;
+    // Write db.json
+    fs.writeFileSync("./db.json", JSON.stringify(passwords, null, 2));
+  } catch (error) {
+    console.error(error);
+  }
+}
+function unset() {
+  console.log("Called UNSET", key, value);
+  try {
+    let passwordsJSON = fs.readFileSync("./db.json", "utf8");
+    const passwords = JSON.parse(passwordsJSON);
+    // delete key
+    delete passwords[key];
+    fs.writeFileSync("./db.json", JSON.stringify(passwords, null, 2));
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+if (command === "get") {
+  get();
+} else if (command === "set") {
+  set();
+} else if (command === "unset") {
+  unset();
+} else {
+  console.error("Unknown command");
+}
