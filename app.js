@@ -1,52 +1,13 @@
-const fs = require("fs");
+const { get, set, unset } = require('./lib/commands');
 
 const [command, key, value] = process.argv.slice(2);
 
-function get() {
-  console.log("Called GET", key);
-  //Read and log db.json
-  try {
-    const passwordsJSON = fs.readFileSync("./db.json", "utf8");
-    const passwords = JSON.parse(passwordsJSON);
-    value = (key, passwords[key]);
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-function set() {
-  console.log("Called SET", key, value);
-  try {
-    //Read db.json
-    let passwordsJSON = fs.readFileSync("./db.json", "utf8");
-    const passwords = JSON.parse(passwordsJSON);
-    // Update value by key
-    passwords[key] = value;
-    // Write db.json
-    fs.writeFileSync("./db.json", JSON.stringify(passwords, null, 2));
-  } catch (error) {
-    console.error(error);
-  }
-}
-function unset() {
-  console.log("Called UNSET", key, value);
-  try {
-    let passwordsJSON = fs.readFileSync("./db.json", "utf8");
-    const passwords = JSON.parse(passwordsJSON);
-    // delete key
-    delete passwords[key];
-    fs.writeFileSync("./db.json", JSON.stringify(passwords, null, 2));
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-if (command === "get") {
-  get();
-} else if (command === "set") {
-  set();
-} else if (command === "unset") {
-  unset();
+if (command === 'get') {
+  get(key);
+} else if (command === 'set') {
+  set(key, value);
+} else if (command === 'unset') {
+  unset(key);
 } else {
-  console.error("Unknown command");
+  console.error('Unknown command');
 }
