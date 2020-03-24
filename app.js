@@ -1,4 +1,4 @@
-const { get, set, unset } = require('./lib/commands');
+const { get, set, unset, reset } = require('./lib/commands');
 const { askForPassword, askForMasterPassword } = require('./lib/questions');
 const { readMasterPassword } = require('./lib/passwords');
 const { verifyHash } = require('./lib/crypto');
@@ -7,6 +7,7 @@ const [command, key] = process.argv.slice(2);
 
 async function run() {
   const answeredMasterPassword = await askForMasterPassword();
+
   if (command === 'reset') {
     return reset(answeredMasterPassword);
   }
