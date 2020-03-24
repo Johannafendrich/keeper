@@ -1,5 +1,4 @@
 const { get, set, unset } = require('./lib/commands');
-const { askForPassword } = require('./lib/questions');
 const { askForPassword, askForMasterPassword } = require('./lib/questions');
 const { readMasterPassword } = require('./lib/passwords');
 
